@@ -1,12 +1,16 @@
 import express from 'express';
+import mongoose from 'mongoose';
+import userRoutes from './routes/user.routes';
 import config from './config/config';
 
 const app = express();
 
-app.get('/hello', (_, res) => {
-  res.send('Hello World!')
-})
+app.use(express.json());
+app.use('/api/v1/user', userRoutes);
 
-app.listen(config.port, () => {
-  console.log(`Expressjs app listening on port ${config.port}`)
-})
+mongoose.connect(`mongodb://${config.mongoUser}:${config.mongoPass}@localhost:27017/task-app?authSource=admin`)
+  .then(() => {
+    console.log('MongoDB connected');
+    app.listen(config.port, () => console.log('Server running on port 3000'));
+  })
+  .catch(err => console.error(err));
