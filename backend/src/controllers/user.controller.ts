@@ -7,6 +7,15 @@ export const registerUser = async (req: Request, res: Response) => {
     const user = await userService.registerUser(username, email, password);
     res.status(201).json({ message: 'User created', user });
   } catch (err: any) {
-    res.status(400).json({ error: err.message });
+    if (err.code === 11000) {
+      const duplicateField = Object.keys(err.keyValue)[0];
+      res.status(400).json({
+        error: `${duplicateField.charAt(0).toUpperCase() + duplicateField.slice(1)} is already in use`,
+      });
+    } else {
+      res.status(400).json({
+        error: err.message
+      });
+    }
   }
 };

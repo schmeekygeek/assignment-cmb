@@ -10,7 +10,11 @@ app.use(express.json());
 app.use(cors());
 app.use('/api/v1/user', userRoutes);
 
-mongoose.connect(`mongodb://${config.mongoUser}:${config.mongoPass}@localhost:27017/task-app?authSource=admin`)
+mongoose.connect(
+  `mongodb://${config.mongoUser}:${config.mongoPass}@localhost:27017/task-app?authSource=admin`, {
+    autoIndex: true,
+  }
+)
   .then(() => {
     console.log('MongoDB connected');
     app.listen(config.port, () => console.log('Server running on port 3000'));
