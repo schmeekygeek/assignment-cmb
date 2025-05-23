@@ -10,6 +10,8 @@ import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import api from "../api"
 import { toast } from "sonner"
+import { isAxiosError } from "axios"
+import { useAuth } from "@/components/auth-provider"
 
 const formSchema = z
   .object({
@@ -35,6 +37,8 @@ const formSchema = z
 
 export default function SignUp() {
   const [ isLoading, setLoading ] = useState(false);
+  const { login } = useAuth();
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,9 +56,14 @@ export default function SignUp() {
       const response = await api.post("/user/register", values);
       if ( response.status === 201 ) {
         toast("Logged in successfully")
+        login(response.data.jwt)
+      } else {
+        toast(response.data.error)
       }
     } catch (err: any) {
-      console.error(err);
+      if (isAxiosError(err)) {
+        toast(err.response?.data.error);
+      }
     } finally {
       setLoading(false);
     }
@@ -62,12 +71,9 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-start p-4">
-        <div className="h-20"/>
-        <h1 className="scroll-m-20 text-4xl font-bold text-left tracking-tight">Let's get you on board!</h1>
-        <div className="h-10"/>
+      <div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-sm">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="username"
@@ -121,7 +127,7 @@ export default function SignUp() {
               )}
             />
             { !isLoading ?
-              ( <Button type="submit">Submit</Button> ) :
+              ( <Button type="submit">Sign Up</Button> ) :
               (
               <Button disabled>
                 <Loader2 className="animate-spin" />

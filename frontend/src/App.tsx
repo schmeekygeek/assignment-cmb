@@ -1,17 +1,25 @@
 import './App.css'
 import { ThemeProvider } from "./components/theme-providers"
 import Header from "./components/header"
-import SignUp from "./pages/signup"
-import { Toaster } from 'sonner'
+import { AuthTabs } from './pages/auth'
+import Task from './pages/tasks'
+import { AuthProvider, useAuth } from './components/auth-provider'
+
+function AppContent() {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <Task /> : <AuthTabs />;
+}
 
 export default function Home() {
+
   return (
     <ThemeProvider>
-      <Toaster />
-      <div className="p-0">
-        <Header />
-        <SignUp />
-      </div>
+      <AuthProvider>
+        <div>
+          <Header />
+          <AppContent />
+        </div>
+      </AuthProvider>
     </ThemeProvider>
   )
 }
