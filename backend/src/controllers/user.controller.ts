@@ -7,16 +7,9 @@ export const registerUser = async (req: Request, res: Response) => {
     const jwt = await userService.registerUser(username, email, password);
     res.status(201).json({ message: 'Account created successfully!', jwt: jwt});
   } catch (err: any) {
-    if (err.code === 11000) {
-      const duplicateField = Object.keys(err.keyValue)[0];
-      res.status(400).json({
-        error: `${duplicateField.charAt(0).toUpperCase() + duplicateField.slice(1)} already taken`,
-      });
-    } else {
-      res.status(400).json({
-        error: err.message
-      });
-    }
+    res.status(400).json({
+      error: err.message,
+    });
   }
 };
 
