@@ -8,86 +8,57 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../components/ui/input"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
-import api from "../api"
-import { isAxiosError } from "axios"
-import { useAuth } from "@/components/auth-provider"
 import { useDialog } from "@/components/dialog-provider"
 
 const formSchema = z
   .object({
-    username: z.string()
-      .min(3, { message: "Username must be at least 3 characters" })
-      .max(20, { message: "Username must be at most 20 characters" })
-      .regex(/^[a-zA-Z0-9_]+$/, {
-        message: "Username can only contain letters, numbers, and underscores",
-      }),
     email: z.string()
       .email({ message: "Invalid email address" }),
     password: z.string()
       .min(2, { message: "Password must be at least 2 characters.", })
       .max(20, { message: "Password limit exceeded", }),
-    confirm: z.string()
-      .min(2, { message: "Password must be at least 2 characters.", })
-      .max(20, { message: "Password limit exceeded", })
   })
-  .refine((data) => data.password === data.confirm, {
-    path: ["confirm"],
-    message: "Passwords do not match",
-  });
 
-export default function SignUp() {
-  const [ isLoading, setLoading ] = useState(false);
-  const { login } = useAuth();
+export default function SignIn() {
+  const [ isLoading ] = useState(false);
   const { showDialog } = useDialog();
 
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
-      confirm: "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      setLoading(true);
-      const response = await api.post("/user/register", values);
-      if ( response.status === 201 ) {
-        showDialog("Success!", "You're now logged in")
-        login(response.data.jwt)
-      } else {
-        showDialog("Error", response.data.error)
-      }
-    } catch (err: any) {
-      if (isAxiosError(err)) {
-        showDialog("Error", err.response?.data.error);
-      }
-    } finally {
-      setLoading(false);
-    }
+    showDialog("hi", values.email)
   }
+  // async function onSubmit(values: z.infer<typeof formSchema>) {
+  //   try {
+  //     setLoading(true);
+  //     const response = await api.post("/user/authenticate", values);
+  //     if ( response.status === 200 ) {
+  //       showDialog("Success!", "You're now logged in")
+  //       login(response.data.jwt)
+  //     } else {
+  //       showDialog("Error", response.data.error)
+  //     }
+  //   } catch (err: any) {
+  //     if (isAxiosError(err)) {
+  //       showDialog("Error", err.response?.data.error);
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   return (
     <>
       <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="gokulover13" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="email"
@@ -114,21 +85,8 @@ export default function SignUp() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="confirm"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="superstrongpassword" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             { !isLoading ?
-              ( <Button type="submit">Create Account</Button> ) :
+              ( <Button type="submit">Log In</Button> ) :
               (
               <Button disabled>
                 <Loader2 className="animate-spin" />

@@ -1,14 +1,10 @@
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Tabs,
   TabsContent,
@@ -16,6 +12,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import SignUp from "./signup"
+import SignIn from "./signin"
 
 export function AuthTabs() {
   return (
@@ -27,15 +24,15 @@ export function AuthTabs() {
       <div className="flex flex-col items-center justify-start">
         <Tabs defaultValue="signup" className="w-[350px] md:w-[450px]">
           <TabsList className="grid w-full grid-cols-2 ">
-            <TabsTrigger value="signup">SignUp</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsTrigger value="signin">Log In</TabsTrigger>
           </TabsList>
           <TabsContent value="signup">
             <Card>
               <CardHeader>
-                <CardTitle>Create Account</CardTitle>
+                <CardTitle className="text-lg">Sign Up</CardTitle>
                 <CardDescription>
-                  Create an account if you haven't yet.
+                  Let's set you up!
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-1">
@@ -45,27 +42,19 @@ export function AuthTabs() {
               </CardContent>
             </Card>
           </TabsContent>
-          <TabsContent value="password">
+          <TabsContent value="signin">
             <Card>
               <CardHeader>
-                <CardTitle>Password</CardTitle>
+                <CardTitle className="text-lg">Log In</CardTitle>
                 <CardDescription>
-                  Change your password here. After saving, you'll be logged out.
+                  Glad to have you back!
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="space-y-1">
-                  <Label htmlFor="current">Current password</Label>
-                  <Input id="current" type="password" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="new">New password</Label>
-                  <Input id="new" type="password" />
+                  <SignIn />
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button>Save password</Button>
-              </CardFooter>
             </Card>
           </TabsContent>
         </Tabs>
