@@ -54,7 +54,8 @@ export const TaskPage = () => {
                   status={task.status}
                   userId={task.userId}
                 /></div>
-            }) : <h1 className="flex h-screen items-center text-center justify-center lg:text-4xl text-xl tracking-tight p-4">Hmm, you haven't created a task yet...<br/>Start by clicking the 'Add Task' button!</h1>
+            }) : <h1 className="flex h-screen items-center text-center justify-center lg:text-4xl text-2xl tracking-tight p-4">
+                   Hmm, you haven't created a task yet...<br/>Start by clicking the 'Add Task' button!</h1>
           )
         }
       </div>
