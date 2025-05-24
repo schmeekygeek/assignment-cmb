@@ -17,7 +17,6 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { useDialog } from "@/components/dialog-provider"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { formatDate } from "@/utils"
 
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title is too short" }),
@@ -42,7 +41,6 @@ function TaskForm({ className }: { className?: string }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true)
-      values.dueDate = formatDate(values.dueDate)
       const response = await api.post("/task/create", values, {
         withCredentials: true,
       })

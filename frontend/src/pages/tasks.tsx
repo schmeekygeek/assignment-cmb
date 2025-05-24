@@ -14,7 +14,6 @@ export const TaskPage = () => {
       try {
         const tasks = await taskService.getAllTasks()
         setTasks(tasks)
-        console.log(tasks)
       } catch (err) {
         console.error("Cannot fetch tasks", err);
       } finally {
