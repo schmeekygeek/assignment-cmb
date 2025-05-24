@@ -37,8 +37,10 @@ yarn # install dependencies
 yarn dev # run the server
 ```
 
-## Features & Notes
+## Notes
 - Secure authentication using `httpOnly` cookies
 - Used `shadcn/ui`,`tailwind`,`vite` on the frontend
 - Used `express`,`mongodb` on the backend
 - Basic responsive layout
+- A user can create, update and delete a task
+- There is an issue where I couldn't figure out how to close the dialog once a task is created
