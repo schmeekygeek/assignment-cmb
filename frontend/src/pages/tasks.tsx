@@ -25,8 +25,13 @@ export const TaskPage = () => {
   }, [])
   
   return (
-    <div className="flex flex-col items-center justify-center">
-      <DrawerDialogTaskForm />
+    <div className="items-center justify-center">
+      <div className="flex flex-row justify-around">
+        <h1 className="text-2xl font-bold tracking-tight lg:text-2xl">
+          Your Tasks
+        </h1>
+        <DrawerDialogTaskForm />
+      </div>
       <div className="flex items-center justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-start">
           { 
