@@ -34,7 +34,7 @@ export const Header = () => {
   return (
     <div className="flex flex-row items-center justify-start">
       <h1 className="text-3xl font-bold tracking-tight lg:text-4xl">
-        MyTaskApp
+        GetItDone
       </h1>
       <div className="flex-1"></div>
       <ThemeToggle />
