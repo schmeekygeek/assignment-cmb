@@ -39,7 +39,7 @@ export const TaskPage = () => {
                 <LoadingSkeleton /> 
                 <LoadingSkeleton /> 
               </> :
-              tasks.map(task => <TaskCard title={task.title} description={task.description} dueDate={task.dueDate} status={task.status} userId={task.userId}/>) 
+              tasks.map(task => <TaskCard _id={task._id} title={task.title} description={task.description} dueDate={task.dueDate} status={task.status} userId={task.userId}/>) 
           }
           <div className="items-end justify-end">
           </div>

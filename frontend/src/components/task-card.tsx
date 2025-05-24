@@ -4,9 +4,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "./ui/dropdown-menu";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Loader2 } from "lucide-react";
+import * as taskService from '../network/task.service';
+import { useState } from "react";
+import { useDialog } from "./dialog-provider";
 
 export const TaskCard = (props: Task) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { showDialog } = useDialog();
 
   const getVariant = (status: string) => {
     switch (status.toUpperCase()) {
@@ -41,10 +46,18 @@ export const TaskCard = (props: Task) => {
 
                 }}>Mark as done</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => {
-
                 }}>Edit</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive" onClick={() => {alert("hi")}}>Delete</DropdownMenuItem>
+                <DropdownMenuItem variant="destructive" onClick={async () => {
+                  setIsLoading(true)
+                  await taskService.deleteTask(props._id)
+                  setIsLoading(false)
+                  showDialog("Success!", "Task deleted")
+                }}>
+
+                  { isLoading ? <Loader2 className="animate-spin" /> : <>Delete</> }
+
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -1,6 +1,7 @@
 import api from "@/api";
 
 export interface Task {
+  _id: string;
   title: string;
   description: string;
   dueDate: string;
@@ -18,3 +19,11 @@ export const getAllTasks = async (): Promise<Task[] | []> => {
     return [];
   }
 };
+
+export const deleteTask = async (taskId: string) => {
+  try {
+    await api.post('/task/delete', { taskId: taskId }, { withCredentials: true })
+  } catch(err: any) {
+    console.log(err.message)
+  }
+}
