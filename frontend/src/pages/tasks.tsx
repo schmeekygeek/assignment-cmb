@@ -3,6 +3,7 @@ import * as taskService from "../network/task.service"
 import { useEffect, useState } from "react";
 import type { Task } from "../network/task.service";
 import { TaskCard } from "@/components/task-card";
+import { DrawerDialogTaskForm } from "@/components/create-task-drawer";
 
 export const TaskPage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -24,8 +25,8 @@ export const TaskPage = () => {
   }, [])
   
   return (
-    <>
-      <div className="p-5"/>
+    <div className="flex flex-col items-center justify-center">
+      <DrawerDialogTaskForm />
       <div className="flex items-center justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-start">
           { 
@@ -44,7 +45,6 @@ export const TaskPage = () => {
           </div>
         </div>
       </div>
-
-    </>
+    </div>
   );
 }

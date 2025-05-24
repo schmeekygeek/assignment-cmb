@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/
 export const TaskCard = (props: Task) => {
 
   const getVariant = (status: string) => {
-    switch (status) {
+    switch (status.toUpperCase()) {
       case "DONE":
         return "default";
       case "IN-PROGRESS":
@@ -19,14 +19,14 @@ export const TaskCard = (props: Task) => {
 
   return (
     <div className="p-2">
-      <Card className="w-[300px]">
+      <Card className="md:w-[400px] w-[300px]">
         <CardHeader>
           <div className="flex flex-row items-start space-y-0">
             <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2">
               {props.title}
             </CardTitle>
             <div className="flex-1"></div>
-            <Badge variant={getVariant(props.status)}>DONE</Badge>
+            <Badge variant={getVariant(props.status)}>{props.status.toUpperCase()}</Badge>
           </div>
           <CardDescription>{props.dueDate}</CardDescription>
         </CardHeader>

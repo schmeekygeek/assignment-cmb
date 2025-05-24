@@ -16,7 +16,7 @@ export default function App() {
     <ThemeProvider>
       <AuthProvider>
         <DialogProvider>
-          <div className="bg-auto backdrop-blur-md sticky z-5 top-0 p-4">
+          <div className="bg-auto backdrop-blur-md sticky z-5 top-0 p-5">
             <Header />
           </div>
           <AppContent />
