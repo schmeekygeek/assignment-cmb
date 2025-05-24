@@ -1,5 +1,6 @@
 # CMB R3 assignment
 
+Requires `node` version >= `18.18.0`
 ## Installation
 
 Clone the repository
