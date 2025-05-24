@@ -28,9 +28,10 @@ type Props = {
   onOpenChange: (val: boolean) => void
   task: Task
   onSave?: () => void
+  refresh: () => void
 }
 
-export default function EditTaskSheet({ open, onOpenChange, task, onSave }: Props) {
+export default function EditTaskSheet({ open, onOpenChange, task, onSave, refresh }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +62,6 @@ export default function EditTaskSheet({ open, onOpenChange, task, onSave }: Prop
       const res = await api.put(`/task/update`, values, {
         withCredentials: true,
       })
-
       if (res.status === 200) {
         showDialog("Success!", "Your task was updated")
         onOpenChange(false)
@@ -73,6 +73,7 @@ export default function EditTaskSheet({ open, onOpenChange, task, onSave }: Prop
       showDialog("Error", err.response?.data?.error || "Unknown error occurred.")
     } finally {
       setLoading(false)
+      refresh()
     }
   }
 

@@ -9,17 +9,18 @@ export const TaskPage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const getAllTasks = async () => {
-      try {
-        const tasks = await taskService.getAllTasks()
-        setTasks(tasks)
-      } catch (err) {
-        console.error("Cannot fetch tasks", err);
-      } finally {
-        setIsLoading(false)
-      }
+  const getAllTasks = async () => {
+    try {
+      const tasks = await taskService.getAllTasks()
+      setTasks(tasks)
+    } catch (err) {
+      console.error("Cannot fetch tasks", err);
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     getAllTasks();
   }, [])
   
@@ -29,35 +30,40 @@ export const TaskPage = () => {
         <h1 className="text-2xl font-bold tracking-tight lg:text-2xl">
           Your Tasks
         </h1>
-        <DrawerDialogTaskForm />
+        <DrawerDialogTaskForm refresh={getAllTasks}/>
       </div>
       <div className="flex items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
         { 
           isLoading ? 
-            <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
-              <LoadingSkeleton /> 
-              <LoadingSkeleton /> 
-              <LoadingSkeleton /> 
-              <LoadingSkeleton /> 
-              <LoadingSkeleton /> 
-              <LoadingSkeleton /> 
-
-            </div> : (
+              (
+                <>
+                  <LoadingSkeleton /> 
+                  <LoadingSkeleton /> 
+                  <LoadingSkeleton /> 
+                  <LoadingSkeleton /> 
+                  <LoadingSkeleton /> 
+                  <LoadingSkeleton /> 
+                </>
+              ) : (
               tasks.length != 0 ?
               tasks.map(task => {
-              return <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
-                <TaskCard
-                  _id={task._id}
-                  title={task.title}
-                  description={task.description}
-                  dueDate={task.dueDate}
-                  status={task.status}
-                  userId={task.userId}
-                /></div>
-            }) : <h1 className="flex h-screen items-center text-center justify-center lg:text-4xl text-2xl tracking-tight p-4">
-                   Hmm, you haven't created a task yet...<br/>Start by clicking the 'Add Task' button!</h1>
+              return <TaskCard
+                  props={{
+                    _id: task._id,
+                    title: task.title,
+                    description: task.description,
+                    dueDate: task.dueDate,
+                    status: task.status,
+                    userId: task.userId,
+                  }}
+                  refresh={getAllTasks}
+                />
+
+            }) : <h1 className="flex h-screen items-center text-center justify-center lg:text-4xl text-2xl tracking-tight p-4">Hmm, you haven't created a task yet...<br/>Start by clicking the 'Add Task' button!</h1>
           )
         }
+        </div>
       </div>
     </div>
   );

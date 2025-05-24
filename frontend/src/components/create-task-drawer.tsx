@@ -25,7 +25,12 @@ const formSchema = z.object({
   status: z.enum(["todo", "in-progress", "done"]),
 })
 
-function TaskForm({ className }: { className?: string }) {
+type TaskFormProps = {
+  className?: string
+  refresh: () => void
+}
+
+function TaskForm({ className, refresh }: TaskFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,6 +58,7 @@ function TaskForm({ className }: { className?: string }) {
       showDialog("Error", err.response?.data?.error || "Unknown error")
     } finally {
       setLoading(false)
+      refresh()
     }
   }
 
@@ -135,7 +141,11 @@ function TaskForm({ className }: { className?: string }) {
   )
 }
 
-export function DrawerDialogTaskForm() {
+type Props = {
+  refresh: () => void,
+}
+
+export function DrawerDialogTaskForm({ refresh }: Props) {
   const [open, setOpen] = React.useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
 
@@ -150,7 +160,7 @@ export function DrawerDialogTaskForm() {
             <DialogTitle>Add Task</DialogTitle>
             <DialogDescription>Alright, let's get something done!</DialogDescription>
           </DialogHeader>
-          <TaskForm />
+          <TaskForm refresh={refresh}/>
         </DialogContent>
       </Dialog>
     )
@@ -166,7 +176,7 @@ export function DrawerDialogTaskForm() {
           <DrawerTitle>Add Task</DrawerTitle>
           <DrawerDescription>Alright, let's get something done!</DrawerDescription>
         </DrawerHeader>
-        <TaskForm className="px-4" />
+        <TaskForm refresh={refresh} className="px-4" />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button className="w-full" variant="outline">Cancel</Button>
