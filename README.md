@@ -35,3 +35,9 @@ cd frontend/
 yarn # install dependencies
 yarn dev # run the server
 ```
+
+## Features & Notes
+- Secure authentication using `httpOnly` cookies
+- Used `shadcn/ui`,`tailwind`,`vite` on the frontend
+- Used `express`,`mongodb` on the backend
+- Basic responsive layout
