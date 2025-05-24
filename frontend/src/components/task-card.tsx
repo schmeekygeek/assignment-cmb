@@ -11,8 +11,9 @@ import { useDialog } from "./dialog-provider";
 import EditTaskSheet from "./edit-task-sheet";
 import api from "@/api";
 
-export const TaskCard = (props: Task) => {
-  const [isLoading, setIsLoading] = useState(false)
+export const TaskCard = ({ props, refresh }: { props: Task, refresh: () => void }) => {
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+  const [isMarkDoneLoading, setMarkDoneLoading] = useState(false)
   const [isEditOpen, setEditOpen] = useState(false)
   const { showDialog } = useDialog();
 
@@ -27,7 +28,7 @@ export const TaskCard = (props: Task) => {
 
   return (
     <div className="p-2">
-      <Card className="md:w-[400px] w-[300px]">
+      <Card className="md:w-[400px] w-[300px] h-[170px]">
         <CardHeader>
           <div className="flex flex-row items-center space-y-0">
             <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2">
@@ -42,30 +43,38 @@ export const TaskCard = (props: Task) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={async () => {
-                  setIsLoading(true)
+                  setMarkDoneLoading(true)
                   try {
                     await api.put('/task/update', { _id: props._id, status: "done" }, { withCredentials: true })
                     showDialog("Success!", "Task marked as done")
                   } catch (err: any) {
                     console.log(err)
-                    showDialog("Error", "Failed to delete task")
+                    showDialog("Error", "Failed to mark task as done")
                   } finally {
-                    setIsLoading(false)
+                    setMarkDoneLoading(false)
+                    refresh()
                   }
                 }}>
-                  Mark as done
+                  {isMarkDoneLoading ? <Loader2 className="animate-spin" /> : <>Mark as done</>}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setEditOpen(true)}>
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive" onClick={async () => {
-                  setIsLoading(true)
-                  await taskService.deleteTask(props._id)
-                  setIsLoading(false)
-                  showDialog("Success!", "Task deleted")
+                  setIsDeleteLoading(true)
+                  try {
+                    await taskService.deleteTask(props._id)
+                    showDialog("Success!", "Task deleted")
+                  } catch (err: any) {
+                    console.log(err)
+                    showDialog("Error", "Failed to delete task")
+                  } finally {
+                    setIsDeleteLoading(false)
+                    refresh()
+                  }
                 }}>
-                  {isLoading ? <Loader2 className="animate-spin" /> : <>Delete</>}
+                  {isDeleteLoading ? <Loader2 className="animate-spin" /> : <>Delete</>}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -78,7 +87,6 @@ export const TaskCard = (props: Task) => {
           </p>
         </CardContent>
       </Card>
-
       <EditTaskSheet
         open={isEditOpen}
         onOpenChange={setEditOpen}
@@ -87,6 +95,7 @@ export const TaskCard = (props: Task) => {
           setEditOpen(false)
           showDialog("Success!", "Task updated")
         }}
+        refresh={refresh}
       />
     </div>
   )
