@@ -29,6 +29,7 @@ yarn dev
 ```
 
 ## Running the web app
+In a different terminal window,
 ```bash
 cd frontend/
 yarn # install dependencies
