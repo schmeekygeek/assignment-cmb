@@ -9,6 +9,9 @@ import { Input } from "../components/ui/input"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { useDialog } from "@/components/dialog-provider"
+import api from "@/api"
+import { useAuth } from "@/components/auth-provider"
+import { isAxiosError } from "axios"
 
 const formSchema = z
   .object({
@@ -20,8 +23,9 @@ const formSchema = z
   })
 
 export default function SignIn() {
-  const [ isLoading ] = useState(false);
+  const [ isLoading, setLoading ] = useState(false);
   const { showDialog } = useDialog();
+  const { login } = useAuth();
 
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -33,26 +37,27 @@ export default function SignIn() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    showDialog("hi", values.email)
+    try {
+      setLoading(true);
+      const response = await api.post(
+        "/user/authenticate",
+        values,
+        { withCredentials: true }
+      );
+      if ( response.status === 200 ) {
+        showDialog("Success!", "You're now logged in")
+        login()
+      } else {
+        showDialog("Error", response.data.error)
+      }
+    } catch (err: any) {
+      if (isAxiosError(err)) {
+        showDialog("Error", err.response?.data.error);
+      }
+    } finally {
+      setLoading(false);
+    }
   }
-  // async function onSubmit(values: z.infer<typeof formSchema>) {
-  //   try {
-  //     setLoading(true);
-  //     const response = await api.post("/user/authenticate", values);
-  //     if ( response.status === 200 ) {
-  //       showDialog("Success!", "You're now logged in")
-  //       login(response.data.jwt)
-  //     } else {
-  //       showDialog("Error", response.data.error)
-  //     }
-  //   } catch (err: any) {
-  //     if (isAxiosError(err)) {
-  //       showDialog("Error", err.response?.data.error);
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
 
   return (
     <>

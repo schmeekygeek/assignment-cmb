@@ -54,10 +54,14 @@ export default function SignUp() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
-      const response = await api.post("/user/register", values);
+      const response = await api.post(
+        "/user/register",
+        values,
+        { withCredentials: true, }
+      );
       if ( response.status === 201 ) {
         showDialog("Success!", "You're now logged in")
-        login(response.data.jwt)
+        login()
       } else {
         showDialog("Error", response.data.error)
       }

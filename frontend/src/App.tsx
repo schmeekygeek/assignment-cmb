@@ -17,7 +17,6 @@ export default function Home() {
     <ThemeProvider>
       <AuthProvider>
         <DialogProvider>
-
           <div>
             <Header />
             <AppContent />

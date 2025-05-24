@@ -1,19 +1,13 @@
-export async function storeJwt(token: string) {
-  localStorage.setItem("token", token)
-}
+import api from './api';
 
-export function getJwt(): string {
-  return localStorage.getItem("token") || ""
-}
+export async function isLoggedIn(): Promise<boolean> {
+  try {
+    const res = await api.get('/user/checkauth', {
+      withCredentials: true,
+    });
 
-export function clearJwt() {
-  localStorage.removeItem("token")
-}
-
-export function isLoggedIn(): Boolean {
-  const token = localStorage.getItem("token")
-  if ( token === '' || token === null ) {
+    return res.status === 200;
+  } catch {
     return false;
   }
-  return true
 }
