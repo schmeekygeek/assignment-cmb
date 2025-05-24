@@ -46,7 +46,6 @@ export const TaskPage = () => {
                   <LoadingSkeleton /> 
                 </>
               ) : (
-              tasks.length != 0 ?
               tasks.map(task => {
               return <TaskCard
                   props={{
@@ -59,8 +58,7 @@ export const TaskPage = () => {
                   }}
                   refresh={getAllTasks}
                 />
-
-            }) : <h1 className="flex h-screen items-center text-center justify-center lg:text-4xl text-2xl tracking-tight p-4">Hmm, you haven't created a task yet...<br/>Start by clicking the 'Add Task' button!</h1>
+            })
           )
         }
         </div>

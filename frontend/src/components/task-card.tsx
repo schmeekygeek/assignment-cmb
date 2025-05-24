@@ -31,7 +31,7 @@ export const TaskCard = ({ props, refresh }: { props: Task, refresh: () => void 
       <Card className="md:w-[400px] w-[300px] h-[170px]">
         <CardHeader>
           <div className="flex flex-row items-center space-y-0">
-            <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2">
+            <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2 text-ellipsis">
               {props.title}
             </CardTitle>
             <div className="flex-1" />
