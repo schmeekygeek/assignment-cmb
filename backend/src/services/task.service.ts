@@ -29,6 +29,10 @@ export const getAllTasks = async (
   }
 }
 
+export const deleteTask = async (taskId: string) => {
+  await taskRepository.deleteTask(taskId)
+}
+
 // auth middleware
 export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies?.token;

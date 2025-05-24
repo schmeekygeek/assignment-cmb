@@ -24,3 +24,15 @@ export const getAllTasks = async (req: Request, res: Response) => {
     });
   }
 }
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const { taskId } = req.body;
+    await taskService.deleteTask(taskId);
+    res.status(200).json({message: "Successfully deleted task"})
+  } catch (err: any) {
+    res.status(400).json({
+      error: err.message,
+    })
+  }
+}

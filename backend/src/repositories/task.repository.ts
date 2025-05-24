@@ -15,3 +15,7 @@ export const getAllTasksByUser = async (userId: string) => {
   const tasks = await Task.find({ userId: userId })
   return tasks
 }
+
+export const deleteTask = async (taskId: string) => {
+  await Task.deleteOne({ _id: taskId })
+}
