@@ -18,6 +18,21 @@ export const createTask = async (
   }
 }
 
+export const updateTask = async (
+  _id: string,
+  title: string,
+  description: string,
+  dueDate: string,
+  status: string,
+  userId: string
+) => {
+  try {
+    await taskRepository.updateTask({_id, title, description, dueDate, status, userId})
+  } catch (err: any) {
+    throw new Error(err.message)
+  }
+}
+
 export const getAllTasks = async (
   userId: string
 ) => {

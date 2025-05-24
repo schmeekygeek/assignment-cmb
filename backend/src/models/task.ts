@@ -6,7 +6,6 @@ const taskSchema = new Schema({
   dueDate: { type: String, required: true },
   status: { 
     type: String, 
-    enum: ['todo', 'in-progress', 'done'], 
     default: 'todo',
     required: true
   },

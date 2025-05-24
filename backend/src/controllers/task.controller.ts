@@ -36,3 +36,16 @@ export const deleteTask = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const { _id, title, description, dueDate, status, userId } = req.body;
+    await taskService.updateTask( _id, title, description, dueDate, status, userId );
+    res.status(200).json({message: "Successfully updated task"})
+  } catch (err: any) {
+    console.log(err)
+    res.status(400).json({
+      error: err.message,
+    })
+  }
+}
