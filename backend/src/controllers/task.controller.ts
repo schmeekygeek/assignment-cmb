@@ -12,3 +12,15 @@ export const createTask = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getAllTasks = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.body;
+    const tasks = await taskService.getAllTasks(userId)
+    res.status(200).json(tasks);
+  } catch (err: any) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+}

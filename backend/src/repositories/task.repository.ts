@@ -10,3 +10,8 @@ export const createTask = async (data: {
   const task = new Task(data)
   return await task.save();
 }
+
+export const getAllTasksByUser = async (userId: string) => {
+  const tasks = await Task.find({ userId: userId })
+  return tasks
+}

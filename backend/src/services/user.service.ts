@@ -1,13 +1,13 @@
 import * as userRepository from '../repositories/user.repository';
 import bcrypt from 'bcrypt';
-import { CreateJWT } from '../util/jwtutil';
+import { createJWT } from '../util/jwtutil';
 
 export const registerUser = async (username: string, email: string, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10)
   password = hashedPassword
   try {
     const user = await userRepository.createUser({ username, email, password });
-    const jwt = CreateJWT(user.id, user.email) 
+    const jwt = createJWT(user.id, user.email) 
     return jwt
   } catch (err: any) {
     if (err.code === 11000) {
@@ -29,5 +29,5 @@ export const authenticateUser = async (email: string, password: string) => {
   if (!isPasswordValid) {
     throw new Error("Incorrect password")
   }
-  return CreateJWT(user.id, user.email)
+  return createJWT(user.id, user.email)
 }

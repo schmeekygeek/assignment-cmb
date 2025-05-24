@@ -5,17 +5,18 @@ import taskRoutes from './routes/task.routes';
 import config from './config/config';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import * as taskService from './services/task.service';
 
 const app = express();
 
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: [ 'http://localhost:5173', 'https://topical-slightly-weevil.ngrok-free.app' ],
   credentials: true
 }));
 app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/task', taskRoutes)
+app.use('/api/v1/task', taskService.authenticateJWT, taskRoutes)
 
 mongoose.connect(
   `mongodb://${config.mongoUser}:${config.mongoPass}@localhost:27017/task-app?authSource=admin`, {

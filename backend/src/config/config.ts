@@ -6,7 +6,7 @@ interface Config {
   port: number;
   mongoUser: String;
   mongoPass: String;
-  secretKey: String;
+  secretKey: string;
 }
 
 const config: Config = {
