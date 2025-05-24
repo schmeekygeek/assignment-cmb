@@ -32,22 +32,31 @@ export const TaskPage = () => {
         <DrawerDialogTaskForm />
       </div>
       <div className="flex items-center justify-center">
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-start">
-          { 
-            isLoading ? 
-              <>
-                <LoadingSkeleton /> 
-                <LoadingSkeleton /> 
-                <LoadingSkeleton /> 
-                <LoadingSkeleton /> 
-                <LoadingSkeleton /> 
-                <LoadingSkeleton /> 
-              </> :
-              tasks.map(task => <TaskCard _id={task._id} title={task.title} description={task.description} dueDate={task.dueDate} status={task.status} userId={task.userId}/>) 
-          }
-          <div className="items-end justify-end">
-          </div>
-        </div>
+        { 
+          isLoading ? 
+            <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
+              <LoadingSkeleton /> 
+              <LoadingSkeleton /> 
+              <LoadingSkeleton /> 
+              <LoadingSkeleton /> 
+              <LoadingSkeleton /> 
+              <LoadingSkeleton /> 
+
+            </div> : (
+              tasks.length != 0 ?
+              tasks.map(task => {
+              return <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
+                <TaskCard
+                  _id={task._id}
+                  title={task.title}
+                  description={task.description}
+                  dueDate={task.dueDate}
+                  status={task.status}
+                  userId={task.userId}
+                /></div>
+            }) : <h1 className="flex h-screen items-center text-center justify-center lg:text-4xl text-xl tracking-tight p-4">Hmm, you haven't created a task yet...<br/>Start by clicking the 'Add Task' button!</h1>
+          )
+        }
       </div>
     </div>
   );
