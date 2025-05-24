@@ -1,23 +1,38 @@
+import type { Task } from "@/network/task.service";
 import { Badge } from "./ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 
-export const TaskCard = () => {
+export const TaskCard = (props: Task) => {
+
+  const getVariant = (status: string) => {
+    switch (status) {
+      case "DONE":
+        return "default";
+      case "IN-PROGRESS":
+        return "secondary"
+      case "TODO":
+        return "destructive"
+      default:
+        return "default"
+    }
+  }
+
   return (
     <div className="p-2">
       <Card className="w-[350px]">
         <CardHeader>
           <div className="flex flex-row items-start space-y-0">
-            <CardTitle className="text-lg flex items-center font-bold tracking-tight pr-2">
-              Make blog post asoenth aoeu eo ooe oe
+            <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2">
+              {props.title}
             </CardTitle>
             <div className="flex-1"></div>
-            <Badge variant={"default"}>DONE</Badge>
+            <Badge variant={getVariant(props.status)}>DONE</Badge>
           </div>
-          <CardDescription> Due Date: May 25 </CardDescription>
+          <CardDescription>{props.dueDate}</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="tracking-tight">
-            Add headers and create a draft, write email to editor.
+            {props.description}
           </p>
         </CardContent>
       </Card>

@@ -2,13 +2,13 @@ import './App.css'
 import { ThemeProvider } from "./components/theme-providers"
 import { Header } from "./components/header"
 import { AuthTabs } from './pages/auth'
-import { Task } from './pages/tasks'
+import { TaskPage } from './pages/tasks'
 import { AuthProvider, useAuth } from './components/auth-provider'
 import { DialogProvider } from './components/dialog-provider'
 
 function AppContent() {
   const { isLoggedIn } = useAuth();
-  return isLoggedIn ? <Task /> : <AuthTabs />;
+  return isLoggedIn ? <TaskPage /> : <AuthTabs />;
 }
 
 export default function Home() {
