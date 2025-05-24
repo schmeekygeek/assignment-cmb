@@ -1,21 +1,14 @@
-import { useAuth } from "@/components/auth-provider";
-import { useDialog } from "@/components/dialog-provider";
-import { Button } from "@/components/ui/button";
+import { TaskCard } from "@/components/task-card";
 
-export default function Task() {
-  const { logout } = useAuth();
-  const { showDialog } = useDialog();
+export const Task = () => {
 
   return (
-    <>
-      <h1>Logged IN</h1>
-      <Button onClick={() => {
-        logout()
-        showDialog("Success!", "You're now logged out.")
-      }}>
-        Log Out
-      </Button>
-    </>
+    <div className="flex flex-col items-center justify-start">
+
+      <TaskCard />
+      <div className="items-end justify-end">
+      </div>
+    </div>
     
   );
 }
