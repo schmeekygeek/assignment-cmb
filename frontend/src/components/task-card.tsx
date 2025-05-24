@@ -9,6 +9,7 @@ import * as taskService from '../network/task.service';
 import { useState } from "react";
 import { useDialog } from "./dialog-provider";
 import EditTaskSheet from "./edit-task-sheet";
+import api from "@/api";
 
 export const TaskCard = (props: Task) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -40,8 +41,17 @@ export const TaskCard = (props: Task) => {
                 <Button asChild size="icon" variant="ghost"><EllipsisVertical className="h-6 w-6" /></Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => {
-
+                <DropdownMenuItem onClick={async () => {
+                  setIsLoading(true)
+                  try {
+                    await api.put('/task/update', { _id: props._id, status: "done" }, { withCredentials: true })
+                    showDialog("Success!", "Task marked as done")
+                  } catch (err: any) {
+                    console.log(err)
+                    showDialog("Error", "Failed to delete task")
+                  } finally {
+                    setIsLoading(false)
+                  }
                 }}>
                   Mark as done
                 </DropdownMenuItem>
