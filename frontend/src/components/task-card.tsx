@@ -19,7 +19,7 @@ export const TaskCard = (props: Task) => {
 
   return (
     <div className="p-2">
-      <Card className="w-[350px]">
+      <Card className="w-[300px]">
         <CardHeader>
           <div className="flex flex-row items-start space-y-0">
             <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2">

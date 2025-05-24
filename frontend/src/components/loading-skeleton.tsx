@@ -1,7 +1,7 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card } from "./ui/card"
 
-export const SkeletonDemo = () => {
+export const LoadingSkeleton = () => {
   return (
     <div className="p-2">
       <Card className="w-[350px] p-4">

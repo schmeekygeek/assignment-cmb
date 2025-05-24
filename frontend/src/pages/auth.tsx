@@ -18,7 +18,7 @@ export function AuthTabs() {
   return (
 
     <>
-      <div className="h-20"/>
+      <div className="h-20 p-5"/>
       <h1 className="scroll-m-20 text-4xl font-bold text-center tracking-tight">Let's get started!</h1>
       <div className="h-5"/>
       <div className="flex flex-col items-center justify-start">

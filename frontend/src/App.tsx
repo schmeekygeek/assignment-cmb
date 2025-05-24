@@ -11,16 +11,15 @@ function AppContent() {
   return isLoggedIn ? <TaskPage /> : <AuthTabs />;
 }
 
-export default function Home() {
-
+export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
         <DialogProvider>
-          <div>
+          <div className="bg-auto backdrop-blur-md sticky z-5 top-0 p-4">
             <Header />
-            <AppContent />
           </div>
+          <AppContent />
         </DialogProvider>
       </AuthProvider>
     </ThemeProvider>

@@ -32,14 +32,13 @@ function LogoutButton() {
 
 export const Header = () => {
   return (
-    <div className="flex flex-row">
-      <h1 className="scroll-m-20 text-3xl font-bold tracking-tight lg:text-4xl">
+    <div className="flex flex-row items-center justify-start">
+      <h1 className="text-3xl font-bold tracking-tight lg:text-4xl">
         MyTaskApp
       </h1>
       <div className="flex-1"></div>
       <ThemeToggle />
       <div className="px-2">
-
         <LogoutButton />
       </div>
     </div>

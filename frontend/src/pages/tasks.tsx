@@ -1,4 +1,4 @@
-import { SkeletonDemo } from "@/components/loading-skeleton";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
 import * as taskService from "../network/task.service"
 import { useEffect, useState } from "react";
 import type { Task } from "../network/task.service";
@@ -24,23 +24,27 @@ export const TaskPage = () => {
   }, [])
   
   return (
-    <div className="flex items-center justify-center">
-      <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-start">
-        { 
-          isLoading ? 
-            <>
-              <SkeletonDemo /> 
-              <SkeletonDemo /> 
-              <SkeletonDemo /> 
-              <SkeletonDemo /> 
-              <SkeletonDemo /> 
-              <SkeletonDemo /> 
-            </> :
-            tasks.map(task => <TaskCard title={task.title} description={task.description} dueDate={task.dueDate} status={task.status} userId={task.userId}/>) 
-        }
-        <div className="items-end justify-end">
+    <>
+      <div className="p-5"/>
+      <div className="flex items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-start">
+          { 
+            isLoading ? 
+              <>
+                <LoadingSkeleton /> 
+                <LoadingSkeleton /> 
+                <LoadingSkeleton /> 
+                <LoadingSkeleton /> 
+                <LoadingSkeleton /> 
+                <LoadingSkeleton /> 
+              </> :
+              tasks.map(task => <TaskCard title={task.title} description={task.description} dueDate={task.dueDate} status={task.status} userId={task.userId}/>) 
+          }
+          <div className="items-end justify-end">
+          </div>
         </div>
       </div>
-    </div>
+
+    </>
   );
 }
