@@ -1,4 +1,5 @@
 # CMB R3 assignment
+**Demo video `./demo.mp4` attached**
 
 Requires `node` version >= `18.18.0`
 ## Installation
