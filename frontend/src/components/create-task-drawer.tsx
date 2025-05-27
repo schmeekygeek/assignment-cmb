@@ -42,9 +42,10 @@ const formSchema = z.object({
 type TaskFormProps = {
   className?: string
   refresh: () => void
+  closeForm: () => void
 }
 
-function TaskForm({ className, refresh }: TaskFormProps) {
+function TaskForm({ className, refresh, closeForm }: TaskFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,6 +72,7 @@ function TaskForm({ className, refresh }: TaskFormProps) {
     } catch (err: any) {
       showDialog("Error", err.response?.data?.error || "Unknown error")
     } finally {
+      closeForm()
       setLoading(false)
       refresh()
     }
@@ -174,7 +176,7 @@ export function DrawerDialogTaskForm({ refresh }: Props) {
             <DialogTitle>Add Task</DialogTitle>
             <DialogDescription>Alright, let's get something done!</DialogDescription>
           </DialogHeader>
-          <TaskForm refresh={refresh}/>
+          <TaskForm refresh={refresh} closeForm={() => setOpen(false)}/>
         </DialogContent>
       </Dialog>
     )
@@ -190,7 +192,7 @@ export function DrawerDialogTaskForm({ refresh }: Props) {
           <DrawerTitle>Add Task</DrawerTitle>
           <DrawerDescription>Alright, let's get something done!</DrawerDescription>
         </DrawerHeader>
-        <TaskForm refresh={refresh} className="px-4" />
+        <TaskForm refresh={refresh}  closeForm={() => setOpen(false)} className="px-4" />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button className="w-full" variant="outline">Cancel</Button>
