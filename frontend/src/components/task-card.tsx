@@ -34,7 +34,7 @@ export const TaskCard = ({ props, refresh }: {
 
   return (
     <div className="p-2">
-      <Card className="md:w-[400px] w-[300px] h-[170px] flex flex-col justify-between overflow-hidden">
+      <Card className="w-[350px] h-[170px] flex flex-col justify-between overflow-hidden transform transition-transform duration-300 hover:scale-110">
         <CardHeader className="overflow-hidden pb-2">
           <div className="flex items-center space-y-0 overflow-hidden">
             <CardTitle className="text-xl font-bold tracking-tight truncate max-w-[200px]">
