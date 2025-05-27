@@ -2,7 +2,16 @@ import type { Task } from "@/network/task.service";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from "./ui/dropdown-menu";
 import { EllipsisVertical, Loader2 } from "lucide-react";
 import * as taskService from "../network/task.service";
 import { useState } from "react";
@@ -10,12 +19,13 @@ import { useDialog } from "./dialog-provider";
 import EditTaskSheet from "./edit-task-sheet";
 import api from "@/api";
 
+
 export const TaskCard = ({ props, refresh }: {
   props: Task;
   refresh: () => void;
 }) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const [isMarkDoneLoading, setMarkDoneLoading] = useState(false);
+  const [isStatusUpdateLoading, setStatusUpdateLoading] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
   const { showDialog } = useDialog();
 
@@ -31,6 +41,25 @@ export const TaskCard = ({ props, refresh }: {
         return "default";
     }
   };
+
+  const updateStatus = async (id: string, status: string) => {
+
+    setStatusUpdateLoading(true);
+    try {
+      await api.put(
+        "/task/update",
+        { _id: id, status: status },
+        { withCredentials: true }
+      );
+      showDialog("Success!", `Task marked as ${status.toUpperCase()}`);
+    } catch (err: any) {
+      console.log(err);
+      showDialog("Error", `Failed to mark task as ${status.toUpperCase()}`);
+    } finally {
+      setStatusUpdateLoading(false);
+      refresh();
+    }
+  }
 
   return (
     <div className="p-2">
@@ -51,32 +80,40 @@ export const TaskCard = ({ props, refresh }: {
                   <EllipsisVertical className="h-6 w-6" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem
-                  onClick={async () => {
-                    setMarkDoneLoading(true);
-                    try {
-                      await api.put(
-                        "/task/update",
-                        { _id: props._id, status: "done" },
-                        { withCredentials: true }
-                      );
-                      showDialog("Success!", "Task marked as done");
-                    } catch (err: any) {
-                      console.log(err);
-                      showDialog("Error", "Failed to mark task as done");
-                    } finally {
-                      setMarkDoneLoading(false);
-                      refresh();
-                    }
-                  }}
-                >
-                  {isMarkDoneLoading ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <>Mark as done</>
-                  )}
-                </DropdownMenuItem>
+              <DropdownMenuContent sideOffset={6} align="start">
+                {isStatusUpdateLoading ? (
+                  <DropdownMenuItem disabled>
+                    Updating...
+                  </DropdownMenuItem>
+                ) :
+                (
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        Mark as
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuItem
+                          onClick={
+                            async () => await updateStatus(props._id, "done")
+                          } >
+                          Done
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={
+                            async () => await updateStatus(props._id, "in-progress")
+                          } >
+                          In-Progress
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={
+                            async () => await updateStatus(props._id, "todo")
+                          } >
+                          Todo
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                )
+                }
                 <DropdownMenuItem onClick={() => setEditOpen(true)}>
                   Edit
                 </DropdownMenuItem>
