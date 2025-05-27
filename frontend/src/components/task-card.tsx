@@ -1,102 +1,131 @@
 import type { Task } from "@/network/task.service";
-import { Badge } from "./ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Badge } from "./ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { DropdownMenu, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "./ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "./ui/dropdown-menu";
 import { EllipsisVertical, Loader2 } from "lucide-react";
-import * as taskService from '../network/task.service';
+import * as taskService from "../network/task.service";
 import { useState } from "react";
 import { useDialog } from "./dialog-provider";
 import EditTaskSheet from "./edit-task-sheet";
 import api from "@/api";
 
-export const TaskCard = ({ props, refresh }: { props: Task, refresh: () => void }) => {
-  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
-  const [isMarkDoneLoading, setMarkDoneLoading] = useState(false)
-  const [isEditOpen, setEditOpen] = useState(false)
+export const TaskCard = ({ props, refresh }: {
+  props: Task;
+  refresh: () => void;
+}) => {
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const [isMarkDoneLoading, setMarkDoneLoading] = useState(false);
+  const [isEditOpen, setEditOpen] = useState(false);
   const { showDialog } = useDialog();
 
   const getVariant = (status: string) => {
     switch (status.toUpperCase()) {
-      case "DONE": return "default";
-      case "IN-PROGRESS": return "secondary";
-      case "TODO": return "destructive";
-      default: return "default";
+      case "DONE":
+        return "default";
+      case "IN-PROGRESS":
+        return "secondary";
+      case "TODO":
+        return "destructive";
+      default:
+        return "default";
     }
-  }
+  };
 
   return (
     <div className="p-2">
-      <Card className="md:w-[400px] w-[300px] h-[170px]">
-        <CardHeader>
-          <div className="flex flex-row items-center space-y-0">
-            <CardTitle className="text-xl flex items-center font-bold tracking-tight pr-2 text-ellipsis">
+      <Card className="md:w-[400px] w-[300px] h-[170px] flex flex-col justify-between overflow-hidden">
+        <CardHeader className="overflow-hidden pb-2">
+          <div className="flex items-center space-y-0 overflow-hidden">
+            <CardTitle className="text-xl font-bold tracking-tight truncate max-w-[200px]">
               {props.title}
             </CardTitle>
             <div className="flex-1" />
-            <Badge variant={getVariant(props.status)}>{props.status.toUpperCase()}</Badge>
+            <Badge variant={getVariant(props.status)}>
+              {props.status.toUpperCase()}
+            </Badge>
             <div className="w-2" />
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button asChild size="icon" variant="ghost"><EllipsisVertical className="h-6 w-6" /></Button>
+                <Button asChild size="icon" variant="ghost">
+                  <EllipsisVertical className="h-6 w-6" />
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={async () => {
-                  setMarkDoneLoading(true)
-                  try {
-                    await api.put('/task/update', { _id: props._id, status: "done" }, { withCredentials: true })
-                    showDialog("Success!", "Task marked as done")
-                  } catch (err: any) {
-                    console.log(err)
-                    showDialog("Error", "Failed to mark task as done")
-                  } finally {
-                    setMarkDoneLoading(false)
-                    refresh()
-                  }
-                }}>
-                  {isMarkDoneLoading ? <Loader2 className="animate-spin" /> : <>Mark as done</>}
+                <DropdownMenuItem
+                  onClick={async () => {
+                    setMarkDoneLoading(true);
+                    try {
+                      await api.put(
+                        "/task/update",
+                        { _id: props._id, status: "done" },
+                        { withCredentials: true }
+                      );
+                      showDialog("Success!", "Task marked as done");
+                    } catch (err: any) {
+                      console.log(err);
+                      showDialog("Error", "Failed to mark task as done");
+                    } finally {
+                      setMarkDoneLoading(false);
+                      refresh();
+                    }
+                  }}
+                >
+                  {isMarkDoneLoading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <>Mark as done</>
+                  )}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setEditOpen(true)}>
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem variant="destructive" onClick={async () => {
-                  setIsDeleteLoading(true)
+                  setIsDeleteLoading(true);
                   try {
-                    await taskService.deleteTask(props._id)
-                    showDialog("Success!", "Task deleted")
+                    await taskService.deleteTask(props._id);
+                    showDialog("Success!", "Task deleted");
                   } catch (err: any) {
-                    console.log(err)
-                    showDialog("Error", "Failed to delete task")
+                    console.log(err);
+                    showDialog("Error", "Failed to delete task");
                   } finally {
-                    setIsDeleteLoading(false)
-                    refresh()
+                    setIsDeleteLoading(false);
+                    refresh();
                   }
                 }}>
-                  {isDeleteLoading ? <Loader2 className="animate-spin" /> : <>Delete</>}
+                  {isDeleteLoading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                      <>Delete</>
+                  )}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <CardDescription>Due Date: {props.dueDate}</CardDescription>
+          <div className="h-2" />
+          <div className="sm:h-[4px] md:h-[3px]" />
+          <CardDescription className="truncate">
+            Due Date: {props.dueDate}
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <p className="tracking-tight">
+        <CardContent className="overflow-hidden">
+          <p className="text-sm">
             {props.description}
           </p>
         </CardContent>
       </Card>
+
       <EditTaskSheet
         open={isEditOpen}
         onOpenChange={setEditOpen}
         task={props}
         onSave={() => {
-          setEditOpen(false)
-          showDialog("Success!", "Task updated")
+          setEditOpen(false);
+          showDialog("Success!", "Task updated");
         }}
         refresh={refresh}
       />
     </div>
-  )
-}
+  );
+};

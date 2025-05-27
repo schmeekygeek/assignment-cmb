@@ -15,11 +15,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 
+const today = new Date().toISOString().split("T")[0];
+
 const formSchema = z.object({
   _id: z.string().min(0, {}),
-  title: z.string().min(3, { message: "Title is too short" }),
-  description: z.string().min(5, { message: "Description is too short" }),
-  dueDate: z.string().min(1, { message: "Due date is required" }),
+  title: z.string()
+  .min(3, { message: "Title is too short" })
+  .max(30, { message: "Title is too long. (max 30 chars)"}),
+  description: z.string()
+  .min(5, { message: "Description is too short" })
+  .max(120, { message: "Description is too long. (max 120 chars)"}),
+  dueDate: z.string()
+  .min(1, { message: "Due date is required" })
+  .refine(
+    (date) => {
+      return date >= today;
+    },
+    { message: "Can't have due date in the past "}
+  ),
   status: z.enum(["todo", "in-progress", "done"]),
 })
 

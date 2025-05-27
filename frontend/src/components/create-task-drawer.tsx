@@ -21,8 +21,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const today = new Date().toISOString().split("T")[0];
 
 const formSchema = z.object({
-  title: z.string().min(3, { message: "Title is too short" }),
-  description: z.string().min(5, { message: "Description is too short" }),
+  title: z.string()
+  .min(3, { message: "Title is too short" })
+  .max(30, { message: "Title is too long. (max 30 chars)"}),
+  description: z.string()
+  .min(5, { message: "Description is too short" })
+  .max(120, { message: "Description is too long. (max 120 chars)"}),
   dueDate: z
   .string()
   .min(1, { message: "Due date is required" })
