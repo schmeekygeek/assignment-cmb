@@ -1,5 +1,5 @@
 # CMB R3 assignment
-**Demo video `./demo.mp4` attached**
+**Demo video `./demo.mp4` attached (outdated)**
 
 Requires `node` version >= `18.18.0`
 ## Installation
@@ -44,4 +44,3 @@ yarn dev # run the server
 - Used `express`,`mongodb` on the backend
 - Basic responsive layout
 - A user can create, update and delete a task
-- There is an issue where I couldn't figure out how to close the dialog once a task is created
