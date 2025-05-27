@@ -115,7 +115,9 @@ export default function EditTaskSheet({ open, onOpenChange, task, onSave, refres
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Due Date</FormLabel>
-                    <FormControl><Input type="date" {...field} /></FormControl>
+                    <FormControl>
+                      <Input type="date" min={new Date().toISOString().split("T")[0]} {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

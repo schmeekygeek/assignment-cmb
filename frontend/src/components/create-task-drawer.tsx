@@ -18,10 +18,20 @@ import { useDialog } from "@/components/dialog-provider"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
+const today = new Date().toISOString().split("T")[0];
+
 const formSchema = z.object({
   title: z.string().min(3, { message: "Title is too short" }),
   description: z.string().min(5, { message: "Description is too short" }),
-  dueDate: z.string().min(1, { message: "Due date is required" }),
+  dueDate: z
+  .string()
+  .min(1, { message: "Due date is required" })
+  .refine(
+    (date) => {
+      return date >= today;
+    },
+    { message: "Can't have due date in the past "}
+  ),
   status: z.enum(["todo", "in-progress", "done"]),
 })
 
@@ -101,7 +111,7 @@ function TaskForm({ className, refresh }: TaskFormProps) {
             <FormItem>
               <FormLabel>Due Date</FormLabel>
               <FormControl>
-                <Input type="date" {...field} />
+                <Input type="date" min={new Date().toISOString().split("T")[0]} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
