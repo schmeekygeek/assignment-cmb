@@ -26,7 +26,7 @@ const formSchema = z.object({
   .max(30, { message: "Title is too long. (max 30 chars)"}),
   description: z.string()
   .min(5, { message: "Description is too short" })
-  .max(120, { message: "Description is too long. (max 120 chars)"}),
+  .max(200, { message: "Description is too long. (max 200 chars)"}),
   dueDate: z
   .string()
   .min(1, { message: "Due date is required" })

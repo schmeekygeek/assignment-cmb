@@ -160,7 +160,7 @@ export const TaskCard = ({ props, refresh }: {
         <DialogContent className="w-[450px]">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold tracking-tight">{props.title}</DialogTitle>
-            <DialogDescription className="text-xl font-normal">{props.description}</DialogDescription>
+            <DialogDescription className="text-lg font-normal">{props.description}</DialogDescription>
           </DialogHeader>
           <div className="text-sm text-gray-400">
             Due Date: {props.dueDate}
